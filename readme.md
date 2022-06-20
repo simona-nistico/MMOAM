@@ -1,0 +1,3 @@
+# Masking Models for Outlier Aspect Mining
+
+This repository contains the code of MMOAM techinque proposed in the paper ....
