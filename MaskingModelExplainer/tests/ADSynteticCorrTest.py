@@ -19,7 +19,6 @@ def run_test(path, **kwargs):
     batch_size = kwargs.pop('batch_size')
     batch_exp = kwargs.pop('exp_batch')
     n_norm = kwargs.pop('n_samples_num')
-    #n_anorm = kwargs.pop('a_samples_num')
     n_adv = kwargs.pop('n_adv')
     n_dim = kwargs.pop('dim_number')
     loss_weights = kwargs.pop('loss_weights')
@@ -75,7 +74,6 @@ def run_test(path, **kwargs):
     plt.legend()
     plt.savefig(os.path.join(path, 'corr_dims.jpg'))
     plt.savefig(os.path.join(path, 'corr_dims.eps'))
-    #plt.show()
     plt.close()
 
     y_train = np.zeros(x_train.shape[0], dtype=np.int32)
@@ -89,15 +87,9 @@ def run_test(path, **kwargs):
     # Define the ad model
     ad_model = define_ad_model(x_train[0].shape)
 
-    lr_schedule_ad = tf.keras.optimizers.schedules.ExponentialDecay(0.001, decay_steps=epochs, decay_rate=0.96, staircase=True)
-    lr_schedule_exp = tf.keras.optimizers.schedules.ExponentialDecay(lr, decay_steps=epochs_exp, decay_rate=0.96, staircase=True)
     ad_model_opt = tf.keras.optimizers.Adam()
     exp_opt = tf.keras.optimizers.Adam(lr)
 
-    # first train
-    ad_model.compile(optimizer=ad_model_opt, loss=focal_loss)
-
-    results = []
     explanations = []
     masks = []
 
@@ -116,7 +108,7 @@ def run_test(path, **kwargs):
     test_labels_expl = classes[test_labels_expl]
     test_images_expl = test_images_expl.astype(np.float32)
 
-    explainer = AETabularMM.TabularMM(ad_model, in_shape, x_train, optimizer=exp_opt)
+    explainer = AETabularMM.TabularMM(ad_model, in_shape, optimizer=exp_opt)
     # ----------------------------------------------------------------------
 
     for i in range(n_adv):
@@ -124,7 +116,9 @@ def run_test(path, **kwargs):
         sample_to_explain = x_train[np.where(y_train == 1)]
         
         start_time = time()
-        ad_model.fit(x_train_ext, y_train_ext, epochs=epochs, batch_size=batch_size, verbose=0)
+        ad_model.trainable = True
+        ad_model.fit(x_train_ext, y_train_ext, epochs=epochs, batch_size=batch_size)
+        ad_model.trainable = False
         # Early-stopping
         pred = ad_model.predict(sample_to_explain)[:, 0]
         if pred < 0.5:
@@ -133,7 +127,7 @@ def run_test(path, **kwargs):
             break
 
         explainer.explain(test_images_expl, test_labels_expl, batch_size=batch_exp,
-                          epochs=epochs_exp, loss_weights=loss_weights, optimizer=exp_opt) # loss_weights=[1., 0.2, .4]
+                          epochs=epochs_exp, loss_weights=loss_weights)
         tot_time = time() - start_time
         print('Elapsed time: ', tot_time)
         logging.info(f'Elapsed time explanation {i}: {tot_time}')
@@ -168,19 +162,14 @@ def run_test(path, **kwargs):
         plt.title('Try n.: {}'.format(i + 1))
         plt.tight_layout()
 
-        #print(np.where(ad_model.predict(x_train_ext)[:, 0] < 0.5, 0, 1))
-        results.append(np.where(ad_model.predict(x_train_ext)[:, 0] < 0.5, 0, 1))
-
     # Take results
     new_sample, _ = explainer.PATCH(sample_to_explain.reshape(1, -1))
     new_sample = new_sample.numpy()
 
     pickle.dump(x_train_ext, open(os.path.join(path, 'x_train_ext.joblib'), 'wb'))
     pickle.dump(y_train_ext, open(os.path.join(path, 'y_train_ext.joblib'), 'wb'))
-    pickle.dump(results, open(os.path.join(path, 'results.joblib'), 'wb'))
     pickle.dump(masks, open(os.path.join(path, 'masks.joblib'), 'wb'))
     plt.figure(1)
-    #plt.legend()
     plt.savefig(os.path.join(path, 'adv_samples.eps'))
     plt.savefig(os.path.join(path, 'adv_samples.jpg'))
     plt.figure(2)
@@ -195,7 +184,7 @@ def run_test(path, **kwargs):
     plt.scatter(new_sample[:, corr_dims[0]], new_sample[:, corr_dims[1]], label='new point', c='cornflowerblue', edgecolors='royalblue')
     plt.savefig(os.path.join(path, 'adv_sample.eps'))
     plt.savefig(os.path.join(path, 'adv_sample.jpg'))
-    #plt.show()
+
     new_sample, dims = explainer.return_explanation(sample_to_explain.reshape(1, -1), threshold=threshold)
     data_plot(x_train, y_train, new_point=new_sample[0], dimensions=np.where(dims==1)[1],
               name=os.path.join(path, f'explanation'), train=True)

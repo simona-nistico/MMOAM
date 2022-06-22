@@ -1,17 +1,13 @@
 import logging
 import pickle
-from math import ceil
 from time import time
 
 import numpy as np
 import tensorflow as tf
-import matplotlib.pyplot as plt
 import os
 
-from mpl_toolkits.mplot3d import Axes3D
 
 from explainers import AETabularMM
-from utils.data_generator import DataGenerator
 from utils.utils import focal_loss, extract_points, _sod_2
 from models.ad_models import define_ad_model
 from pyod.models.sod import SOD
@@ -26,7 +22,6 @@ def run_test(path, **kwargs):
     n_anorm = kwargs.pop('a_samples_num')
     n_adv = kwargs.pop('n_adv')
     n_dim = kwargs.pop('dim_number')
-    # loss_weights = [1., 0.4, .5]
     loss_weights = kwargs.pop('loss_weights')
     n_mean = kwargs.pop('n_mean')
     n_std = kwargs.pop('n_std')
@@ -78,14 +73,14 @@ def run_test(path, **kwargs):
         x_train_ext = x_train_sub.copy()
         y_train_ext = y_train_sub.copy()
 
-        explainer = AETabularMM.TabularMM(ad_model, in_shape, x_train, optimizer=exp_opt)
+        explainer = AETabularMM.TabularMM(ad_model, in_shape, optimizer=exp_opt)
 
         for j in range(n_adv):
             print(f'--------------------- ADV EPOCH: {j} -------------------')
             sample_to_explain = x_train[np.where(y_train == 1)]
             start_time = time()
             ad_model.trainable = True
-            ad_model.fit(x_train_ext, y_train_ext, batch_size=batch_size, epochs=epochs, verbose=0)
+            ad_model.fit(x_train_ext, y_train_ext, batch_size=batch_size, epochs=epochs)
             ad_model.trainable = False
             # Early-stopping
             pred = ad_model.predict(sample_to_explain)[:, 0]
@@ -96,11 +91,10 @@ def run_test(path, **kwargs):
 
             exp_opt = tf.keras.optimizers.Adam(learning_rate=lr)
             explainer.explain(x_train_sub, y_train_sub, batch_size=batch_exp,
-                              epochs=epochs_exp, loss_weights=loss_weights,
-                              optimizer=exp_opt)  # loss_weights=[1., 0.2, .4]
+                              epochs=epochs_exp, loss_weights=loss_weights,)
             new_sample = explainer.PATCH(sample_to_explain.reshape(1, -1))
             new_sample = new_sample.numpy()
-            #mask, choose = explainer.MASKGEN(sample_to_explain.reshape(1, -1))
+
             x_train_ext = np.append(x_train_ext, new_sample, axis=0)
             y_train_ext = np.append(y_train_ext, [1.], axis=0)
 

@@ -17,10 +17,7 @@ class DefaultConfig(object):
             '--logdir', type=str, default='.',
             help='Directory where log data is to be stored. '
         )
-        # parser.add_argument(
-        #     '--datadir', type=str, default=pt.join('..', '..', 'data', 'datasets'),
-        #     help='Directory where datasets are found or to be downloaded to. Defaults to ../../data/datasets.',
-        # )
+
         parser.add_argument(
             '--readme', type=str, default='',
             help='Some notes to be stored in the automatically created config.txt configuration file.'
@@ -66,11 +63,7 @@ class DefaultConfig(object):
         parser.add_argument('-t', '--threshold', type=float, default=0.5,
                             help='Threshold for which a dimension is anomalous')
         parser.add_argument(
-            '--optimizer-type', type=str, default='sgd', choices=['sgd', 'adam'],
-            help='The type of optimizer. Defaults to "sgd". '
-        )
-        parser.add_argument(
-            '--loss-weights', type=float, nargs='*', default=[1., 0.2, .6],
+            '--loss-weights', type=float, nargs='*', default=[1., 1., .8, .8],
             help='Weights of the losses used for  '
         )
         parser.add_argument(
@@ -123,6 +116,6 @@ class DefaultReal(DefaultConfig):
     def __call__(self, parser: ArgumentParser) -> ArgumentParser:
         parser = super().__call__(parser)
         parser.set_defaults(
-            dataset='wbc'
+            dataset='iris'
         )
         return parser
