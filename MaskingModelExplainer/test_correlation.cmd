@@ -1,0 +1,15 @@
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 10 --loss-weights 1. 0.2 1. --corr-anom gen -no 1 -nd 3 -ee 300 -lr 0.05
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 10 --loss-weights 1. 0.2 1. --corr-anom gen -no 1 -nd 5 -ee 300 -lr 0.05
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 10 --loss-weights 1. 0.2 1. --corr-anom gen -no 1 -nd 10 -ee 300 -lr 0.05
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 10 --loss-weights 1. 0.2 1. --corr-anom gen -no 1 -nd 20 -ee 300 -lr 0.05
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 5 --loss-weights 1. 1.5 0.3 --corr-anom corr -no 25 -nd 3 -ee 300
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 3 --loss-weights 1.5 0.5 0.7 --corr-anom corr -no 25 -nd 5 -ee 300
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 3 --loss-weights 1.5 0.5 0.7 --corr-anom corr -no 25 -nd 10 -ee 300
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 3 --loss-weights 1.5 0.5 0.7 --corr-anom corr -no 25 -nd 20 -ee 300
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -nadv 5 --loss-weights 1. 1.5 0.3 --corr-anom both -no 25 -nd 3 -ee 300
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -e 120 -b 16 -nadv 3 --loss-weights 1.5 0.5 0.7 --corr-anom both -no 25 -nd 5 -ee 500
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -e 120 -b 16 -nadv 3 --loss-weights 1.5 0.5 0.7 --corr-anom both -no 25 -nd 10 -ee 500
+REM C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -e 120 -b 16 -nadv 3 --loss-weights 1.5 0.5 0.7 --corr-anom both -no 25 -nd 20 -ee 500
+C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -e 100 -b 8 -nadv 5 --loss-weights 2. 0.3 0.3 --corr-anom both -no 25 -nd 5 -ee 500
+C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -e 100 -b 8 -nadv 5 --loss-weights 2. 0.3 0.3 --corr-anom both -no 25 -nd 10 -ee 500
+C:\Users\utente\Anaconda3\envs\GANLIME\python.exe D:/Dottorato/MaskingModelExplainer/test_runner_correlation.py -e 100 -b 8 -nadv 5 --loss-weights 2. 0.3 0.3 --corr-anom both -no 25 -nd 20 -ee 500
