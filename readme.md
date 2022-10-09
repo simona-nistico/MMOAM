@@ -6,18 +6,12 @@ This repository contains the code of MMOAM techinque proposed in the paper **Out
 If you use this code, please consider citing:
 
 ```
-@InProceedings{10.1007/978-3-031-15740-0_28,
-author="Angiulli, Fabrizio
-and Fassetti, Fabio
-and Nistic{\`o}, Simona
-and Palopoli, Luigi",
-editor="Chiusano, Silvia
-and Cerquitelli, Tania
-and Wrembel, Robert",
-title="Outlier Explanation Through Masking Models",
-booktitle="Advances in Databases and Information Systems",
-year="2022",
-publisher="Springer International Publishing",
-address="Cham",
-pages="392--406",
+@inproceedings{angiulli2022outlier,
+  title={Outlier Explanation Through Masking Models},
+  author={Angiulli, Fabrizio and Fassetti, Fabio and Nistic{\`o}, Simona and Palopoli, Luigi},
+  booktitle={European Conference on Advances in Databases and Information Systems},
+  pages={392--406},
+  year={2022},
+  organization={Springer}
+}
 ```
